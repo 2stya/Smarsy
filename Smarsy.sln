@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smarsy.Entity", "SmarsyEnti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smarsy.Test", "Smarsy.Test\Smarsy.Test.csproj", "{7B8F09CF-56CD-4CF7-9E17-EC82B9D6167E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smarsy.WebApi", "Smarsy.WebApi\Smarsy.WebApi.csproj", "{70491459-A6BB-4620-8ABD-22483934F873}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smarsy.WebApi.Tests", "Smarsy.WebApi.Tests\Smarsy.WebApi.Tests.csproj", "{B3A41C3E-896D-44A0-B8A8-634DD84EC43E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +45,14 @@ Global
 		{7B8F09CF-56CD-4CF7-9E17-EC82B9D6167E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B8F09CF-56CD-4CF7-9E17-EC82B9D6167E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B8F09CF-56CD-4CF7-9E17-EC82B9D6167E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70491459-A6BB-4620-8ABD-22483934F873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70491459-A6BB-4620-8ABD-22483934F873}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70491459-A6BB-4620-8ABD-22483934F873}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70491459-A6BB-4620-8ABD-22483934F873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3A41C3E-896D-44A0-B8A8-634DD84EC43E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3A41C3E-896D-44A0-B8A8-634DD84EC43E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3A41C3E-896D-44A0-B8A8-634DD84EC43E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3A41C3E-896D-44A0-B8A8-634DD84EC43E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
