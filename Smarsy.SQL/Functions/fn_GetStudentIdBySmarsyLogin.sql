@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION [dbo].[GetStudentIdBySmarsyLogin] (@login INT)
+﻿CREATE FUNCTION [dbo].[fn_GetStudentIdBySmarsyLogin] (@login INT)
 RETURNS INT
 AS
 BEGIN

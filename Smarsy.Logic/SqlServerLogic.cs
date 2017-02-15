@@ -1,4 +1,7 @@
-﻿namespace Smarsy.Logic
+﻿using System.Linq;
+using Smarsy.Configuration;
+
+namespace Smarsy.Logic
 {
     using System;
     using System.Collections.Generic;
@@ -8,9 +11,6 @@
 
     public class SqlServerLogic : IDatabaseLogic
     {
-        private readonly string _stringConn =
-            "Data Source = localhost;Initial Catalog=Smarsy; Integrated Security = True; Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout = 60; Encrypt=False;TrustServerCertificate=True";
-        ////"Data Source=(localdb)\\ProjectsV13;Initial Catalog=Smarsy;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True";
         private string _smarsyLogin;
 
         public SqlServerLogic(string smarsyLogin)
@@ -22,9 +22,9 @@
         {
         }
 
-        public void UpsertLessons(List<string> lessons)
+        public void UpsertLessons(IList<Lesson> lessons)
         {
-            foreach (var lesson in lessons)
+            foreach (var lesson in lessons.Select(l => l.LessonName).Distinct())
             {
                 InsertLessonIfNotExists(lesson);
             }
@@ -58,7 +58,7 @@
 
         public int GetLessonIdByLessonShortName(string lessonName)
         {
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
 
@@ -74,7 +74,7 @@
 
         public int InsertTeacherIfNotExists(string teacherName)
         {
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_InsertTeacherIfNotExists", objconnection))
@@ -91,7 +91,7 @@
 
         public int GetLessonIdByName(string markLessonName)
         {
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
 
@@ -105,17 +105,32 @@
             }
         }
 
-        public Student GetStudentBySmarsyLogin(string login)
+        public Student GetStudent(string login = "", int studentId = 0, int smarsyChildId = 0)
         {
             var result = new Student();
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
-                using (var objcmd = new SqlCommand("dbo.p_GetStudentBySmarsyId", objconnection))
+                using (var objcmd = new SqlCommand("dbo.p_GetStudent", objconnection))
                 {
                     objcmd.CommandType = CommandType.StoredProcedure;
-                    objcmd.Parameters.Add("@login", SqlDbType.VarChar, 50);
-                    objcmd.Parameters["@login"].Value = login;
+                    if (login != null && !login.Equals(string.Empty))
+                    {
+                        objcmd.Parameters.Add("@login", SqlDbType.VarChar, 50);
+                        objcmd.Parameters["@login"].Value = login;
+                    }
+
+                    if (studentId > 0)
+                    {
+                        objcmd.Parameters.Add("@studentId", SqlDbType.Int);
+                        objcmd.Parameters["@studentId"].Value = studentId;
+                    }
+
+                    if (smarsyChildId > 0)
+                    {
+                        objcmd.Parameters.Add("@smarsyChildId", SqlDbType.Int);
+                        objcmd.Parameters["@smarsyChildId"].Value = smarsyChildId;
+                    }
 
                     var res = objcmd.ExecuteReader();
                     while (res.Read())
@@ -133,10 +148,15 @@
             }
         }
 
+        public Student GetStudentBySmarsyLogin(string login)
+        {
+            return GetStudent(login: login);
+        }
+
         public List<Student> GetStudentsWithBirthdayTomorrow()
         {
             var students = new List<Student>();
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_GetStudentsWithBirthdayTomorrow", objconnection))
@@ -164,7 +184,7 @@
         public List<Ad> GetNewAds()
         {
             var ads = new List<Ad>();
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_GetNewAds", objconnection))
@@ -189,7 +209,7 @@
         public List<Remark> GetNewRemarks()
         {
             var remarks = new List<Remark>();
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_GetNewRemarks", objconnection))
@@ -212,12 +232,12 @@
                 return remarks;
             }
         }
-        
+
         public List<HomeWork> GetHomeWorkForFuture()
         {
             var result = new List<HomeWork>();
 
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_GetHomeWorkForFuture", objconnection))
@@ -244,7 +264,7 @@
         public List<LessonMark> GetStudentMarkSummary(int studentId)
         {
             var result = new List<LessonMark>();
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_GetStudentMarkSummary", objconnection))
@@ -303,9 +323,25 @@
             }
         }
 
+        public int GetStudentIdBySmarsyLogin(string login)
+        {
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
+            {
+                objconnection.Open();
+
+                using (var objcmd = new SqlCommand("select dbo.fn_GetStudentIdBySmarsyLogin(@login)", objconnection))
+                {
+                    objcmd.CommandType = CommandType.Text;
+                    objcmd.Parameters.AddWithValue("@login", login);
+                    var res = objcmd.ExecuteScalar();
+                    return int.Parse(res.ToString());
+                }
+            }
+        }
+
         private void UpsertRemark(Remark remark)
         {
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_UpsertRemark", objconnection))
@@ -325,7 +361,7 @@
 
         private void UpsertStudent(Student student)
         {
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_UpsertStudent", objconnection))
@@ -344,7 +380,7 @@
         private List<StudentMark> UpsertStudentMarks(int studentId, int lessonId, List<StudentMark> marks)
         {
             var result = new List<StudentMark>();
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_UpsertStudentMarksByLesson", objconnection))
@@ -386,25 +422,9 @@
             }
         }
 
-        private int GetStudentIdBySmarsyLogin(string login)
-        {
-            using (var objconnection = new SqlConnection(_stringConn))
-            {
-                objconnection.Open();
-
-                using (var objcmd = new SqlCommand("select dbo.GetStudentIdBySmarsyLogin(@login)", objconnection))
-                {
-                    objcmd.CommandType = CommandType.Text;
-                    objcmd.Parameters.AddWithValue("@login", login);
-                    var res = objcmd.ExecuteScalar();
-                    return int.Parse(res.ToString());
-                }
-            }
-        }
-
         private void UpsertHomeWork(HomeWork hw)
         {
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_UpsertHomeWork", objconnection))
@@ -426,7 +446,7 @@
 
         private void InsertLessonIfNotExists(string lesson)
         {
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_InsertLessonIfNotExists", objconnection))
@@ -442,7 +462,7 @@
 
         private void InsertAdIfNotExists(Ad ad)
         {
-            using (var objconnection = new SqlConnection(_stringConn))
+            using (var objconnection = new SqlConnection(ApiConfig.ConnectionString))
             {
                 objconnection.Open();
                 using (var objcmd = new SqlCommand("dbo.p_InsertAdsIfNotExists", objconnection))

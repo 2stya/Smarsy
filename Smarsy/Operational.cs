@@ -1,4 +1,9 @@
-﻿namespace Smarsy
+﻿using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using Smarsy.Configuration;
+
+namespace Smarsy
 {
     using System;
     using System.Collections.Generic;
@@ -57,13 +62,32 @@
         public void InitStudentFromDb()
         {
             Logger.Info("Getting student info from database");
-            Student = _sqlServerLogic.GetStudentBySmarsyLogin(Student.Login);
+
+            var studentId = _sqlServerLogic.GetStudentIdBySmarsyLogin(Student.Login);
+
+            var client = new HttpClient {BaseAddress = new Uri(ApiConfig.ApiUrl)};
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var response = client.GetAsync($"api/Student/{studentId}").Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Logger.Error(new NullReferenceException(), "No response from service");
+                return;
+            }
+
+            Student = JsonConvert.DeserializeObject<Student>(response.Content.ReadAsStringAsync().Result);
         }
 
         public void LoginToSmarsy()
         {
             GoToLink("http://www.smarsy.ua");
             Login();
+        }
+
+        public void UpdateLessons()
+        {
+            GetTableObjectFromPage("http://smarsy.ua/private/parent.php?jsid=Diary&tab=Mark", ProcessLessonsRow, "Lessons", _sqlServerLogic.UpsertLessons);
         }
 
         public void UpdateAds()
@@ -188,6 +212,28 @@
         private static string ChangeDateFormat(string date)
         {
             return date.Substring(6, 4) + "." + date.Substring(3, 2) + "." + date.Substring(0, 2);
+        }
+
+        private static Lesson ProcessLessonsRow(HtmlElement row)
+        {
+            var lesson = new Lesson();
+            var i = 0;
+
+            foreach (HtmlElement oneRow in row.GetElementsByTagName("td"))
+            {
+                if (i == 1)
+                {
+                    lesson.LessonName = oneRow.InnerHtml;
+                }
+
+                i++;
+                if (i > 1)
+                {
+                    break;
+                }
+            }
+
+            return lesson;
         }
 
         private static Ad ProcessAdsRow(HtmlElement row)

@@ -186,6 +186,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Formatter\BrowserJsonFormatter.cs" />
     <Compile Include="Global.asax.cs">
@@ -246,7 +247,16 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Smarsy.Logic\Smarsy.Logic.csproj">
+      <Project>{B3B71B88-34FF-4100-9A08-269D91112964}</Project>
+      <Name>Smarsy.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmarsyEntities\Smarsy.Entity.csproj">
+      <Project>{3F0E9805-2DF4-447F-9F8A-57648E2E12EE}</Project>
+      <Name>Smarsy.Entity</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
