@@ -15,7 +15,7 @@
                 var op = new Operational(options.SmarsyLogin);
                 op.InitStudentFromDb();
                 //// options.Methods = "LoginToSmarsy,UpdateMarks,UpdateHomeWork,UpdateAds,UpdateStudents,UpdateRemarks";
-                options.Methods = "LoginToSmarsy,UpdateRemarks";
+                //options.Methods = "LoginToSmarsy,UpdateRemarks";
 
                 var methods = options.Methods.Split(',');
                 foreach (var method in methods)

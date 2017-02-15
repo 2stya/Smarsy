@@ -60,9 +60,9 @@
     <Compile Include="SqlServerLogic.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SmarsyEntities\SmarsyEntities.csproj">
+    <ProjectReference Include="..\SmarsyEntities\Smarsy.Entity.csproj">
       <Project>{3F0E9805-2DF4-447F-9F8A-57648E2E12EE}</Project>
-      <Name>SmarsyEntities</Name>
+      <Name>Smarsy.Entity</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

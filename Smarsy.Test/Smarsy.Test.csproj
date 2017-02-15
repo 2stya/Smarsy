@@ -62,9 +62,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SmarsyEntities\SmarsyEntities.csproj">
+    <ProjectReference Include="..\SmarsyEntities\Smarsy.Entity.csproj">
       <Project>{3f0e9805-2df4-447f-9f8a-57648e2e12ee}</Project>
-      <Name>SmarsyEntities</Name>
+      <Name>Smarsy.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Smarsy\Smarsy.csproj">
       <Project>{115adbac-7905-4400-9117-e3c140ad3938}</Project>

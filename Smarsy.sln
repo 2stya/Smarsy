@@ -9,7 +9,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Smarsy.SQL", "Smarsy.SQL\Sm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smarsy.Logic", "Smarsy.Logic\Smarsy.Logic.csproj", "{B3B71B88-34FF-4100-9A08-269D91112964}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmarsyEntities", "SmarsyEntities\SmarsyEntities.csproj", "{3F0E9805-2DF4-447F-9F8A-57648E2E12EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smarsy.Entity", "SmarsyEntities\Smarsy.Entity.csproj", "{3F0E9805-2DF4-447F-9F8A-57648E2E12EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smarsy.Test", "Smarsy.Test\Smarsy.Test.csproj", "{7B8F09CF-56CD-4CF7-9E17-EC82B9D6167E}"
 EndProject

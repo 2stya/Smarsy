@@ -91,9 +91,9 @@
       <Project>{b3b71b88-34ff-4100-9a08-269d91112964}</Project>
       <Name>Smarsy.Logic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SmarsyEntities\SmarsyEntities.csproj">
+    <ProjectReference Include="..\SmarsyEntities\Smarsy.Entity.csproj">
       <Project>{3f0e9805-2df4-447f-9f8a-57648e2e12ee}</Project>
-      <Name>SmarsyEntities</Name>
+      <Name>Smarsy.Entity</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
