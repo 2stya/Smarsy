@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Web.Http;
+using Smarsy.WebApi.Formatter;
 
 namespace Smarsy.WebApi
 {
@@ -19,6 +21,8 @@ namespace Smarsy.WebApi
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Formatters.Add(new BrowserJsonFormatter());
         }
     }
 }
