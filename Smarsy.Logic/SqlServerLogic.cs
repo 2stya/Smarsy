@@ -9,7 +9,7 @@ namespace Smarsy.Logic
     using System.Data.SqlClient;
     using SmarsyEntities;
 
-    public class SqlServerLogic : IDatabaseLogic
+    public class SqlServerLogic
     {
         private string _smarsyLogin;
 
@@ -22,7 +22,7 @@ namespace Smarsy.Logic
         {
         }
 
-        public void UpsertLessons(IList<Lesson> lessons)
+        public void UpsertLessons(IEnumerable<Lesson> lessons)
         {
             foreach (var lesson in lessons.Select(l => l.LessonName).Distinct())
             {
@@ -30,7 +30,7 @@ namespace Smarsy.Logic
             }
         }
 
-        public void UpsertAds(IList<Ad> ads)
+        public void UpsertAds(IEnumerable<Ad> ads)
         {
             foreach (var ad in ads)
             {
@@ -38,7 +38,7 @@ namespace Smarsy.Logic
             }
         }
 
-        public void UpsertHomeWorks(List<HomeWork> homeWorks)
+        public void UpsertHomeWorks(IEnumerable<HomeWork> homeWorks)
         {
             foreach (var homeWork in homeWorks)
             {
@@ -46,7 +46,7 @@ namespace Smarsy.Logic
             }
         }
 
-        public void UpserStudentAllLessonsMarks(IList<LessonMark> marks)
+        public void UpserStudentAllLessonsMarks(IEnumerable<LessonMark> marks)
         {
             var studentId = GetStudentIdBySmarsyLogin(_smarsyLogin);
             foreach (var mark in marks)
