@@ -63,18 +63,20 @@ namespace Smarsy
         {
             Logger.Info("Getting student info from database");
 
-            var client = new HttpClient {BaseAddress = new Uri(ApiConfig.ApiUrl)};
+            Student = ExecRequest<Student>($"api/Students?login={Student.Login}");
+        }
+
+        private static T ExecRequest<T>(string url)
+        {
+            var client = new HttpClient { BaseAddress = new Uri(ApiConfig.ApiUrl) };
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = client.GetAsync($"api/Students?login={Student.Login}").Result;
+            var response = client.GetAsync(url).Result;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                Logger.Error(new NullReferenceException(), "No response from service");
-                throw new NullReferenceException();
-            }
+            if (response.IsSuccessStatusCode) return JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().Result);
 
-            Student = JsonConvert.DeserializeObject<Student>(response.Content.ReadAsStringAsync().Result);
+            Logger.Error(new NullReferenceException(), "No response from service");
+            throw new NullReferenceException();
         }
 
         public void LoginToSmarsy()
