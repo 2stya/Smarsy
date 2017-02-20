@@ -66,7 +66,7 @@ namespace Smarsy
             var client = new HttpClient {BaseAddress = new Uri(ApiConfig.ApiUrl)};
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = client.GetAsync($"api/Students/?login={Student.Login}").Result;
+            var response = client.GetAsync($"api/Students?login={Student.Login}").Result;
 
             if (!response.IsSuccessStatusCode)
             {
