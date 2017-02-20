@@ -1,26 +1,25 @@
 ﻿
+using System;
+
 namespace Smarsy.WebApi.Controllers
 {
-    using System.Collections.Generic;
     using System.Web.Http;
-    using Smarsy.Logic;
+    using Logic;
     using SmarsyEntities;
 
-    public class StudentController : ApiController
+    public class StudentsController : ApiController
     {
-        // GET: api/Student
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET: api/Student/5
-        public Student Get(int id)
+        public Student Get(int id = 0, string login = "")
         {
-            var sqlLogic = new SqlServerLogic();
-            var student = sqlLogic.GetStudent(studentId: id);
+            if (id == 0 && login.Equals(string.Empty))
+            {
+                throw new NullReferenceException("Student Id or login must be provided.");
+            }
 
-            return student;
+            var sqlLogic = new SqlServerLogic();
+
+            return id > 0 ? sqlLogic.GetStudent(studentId: id) : sqlLogic.GetStudent(login: login);
         }
 
         // POST: api/Student

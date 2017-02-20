@@ -63,17 +63,15 @@ namespace Smarsy
         {
             Logger.Info("Getting student info from database");
 
-            var studentId = _sqlServerLogic.GetStudentIdBySmarsyLogin(Student.Login);
-
             var client = new HttpClient {BaseAddress = new Uri(ApiConfig.ApiUrl)};
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = client.GetAsync($"api/Student/{studentId}").Result;
+            var response = client.GetAsync($"api/Students/?login={Student.Login}").Result;
 
             if (!response.IsSuccessStatusCode)
             {
                 Logger.Error(new NullReferenceException(), "No response from service");
-                return;
+                throw new NullReferenceException();
             }
 
             Student = JsonConvert.DeserializeObject<Student>(response.Content.ReadAsStringAsync().Result);
@@ -102,7 +100,7 @@ namespace Smarsy
 
         public void UpdateStudents()
         {
-            GetTableObjectFromPage("http://smarsy.ua/private/parent.php?jsid=Grade&lesson=0&tab=List", ProcessStudentsRow, "Students", _sqlServerLogic.UpsertStudents);
+            GetTableObjectFromPage("http://smarsy.ua/private/parent.php?jsid=Grade&lesson=0&tab=List", ProcessStudentsRow, "Student", _sqlServerLogic.UpsertStudents);
         }
 
         public void UpdateRemarks()

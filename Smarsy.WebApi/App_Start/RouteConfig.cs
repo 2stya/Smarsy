@@ -18,6 +18,12 @@ namespace Smarsy.WebApi
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "Smarsy/Students",
+                url: "{controller}/{id}/{login}",
+                defaults: new { controller = "Students", action = "Get", id = UrlParameter.Optional, login = UrlParameter.Optional }
+            );
         }
     }
 }

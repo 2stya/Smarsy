@@ -18,8 +18,8 @@ namespace Smarsy.WebApi
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{id}/{login}",
+                defaults: new { id = RouteParameter.Optional, login = RouteParameter.Optional }
             );
 
             config.Formatters.Add(new BrowserJsonFormatter());
